@@ -2,98 +2,99 @@ import re
 import logging
 
 from collections import OrderedDict
+import dataclasses
+from datetime import datetime
 
-class LPAR():
+from zos_utilities.logical_cpu import Logical_CPU
+
+
+@dataclasses.dataclass
+class LPAR:
     """
-    Represents a IBM z/OS LPAR
+    Represents an IBM z/OS LPAR
     """
 
-    def __init__(self):
+    logical_processors: dict = dataclasses.field(default_factory=OrderedDict)
+    physical_cpus: dict = dataclasses.field(default_factory=OrderedDict)
+    hiperdispatch: bool = None
+    mt_mode: bool = None
+    cp_mt_mode: bool = None
+    ziip_mt_mode: bool = None
+    cpc_nd: str = None
+    cpc_si: str = None
+    cpc_model: str = None
+    cpc_id: str = None
+    cpc_name: str = None
+    lpar_name: str = None
+    lpar_id: str = None
+    css_id: str = None
+    mif_id: str = None
 
-        logger = logging.getLogger(__name__)
+    name: str = None
+    part_id: str = None
+    partition_number: str = None
+    CPC: str = None
+    shared_processors: int = None
+    active: bool = None
+    IPL_volume: bool = None
+    os: bool = None
+    os_name: bool = None
+    os_level: bool = None
+    last_updated: datetime = None
+    url: str = None
+    start_update: datetime = None
+    finish_update: datetime = None
 
-        self.logical_processors = OrderedDict()
+    number_general_cpus: int = None
+    number_reserved_cps: int = None
+    number_general_cores: int = None
+    number_reserved_cores: int = None
 
-        self.physical_cpus = OrderedDict()
-        self.hiperdispatch = None
-        self.mt_mode = None
-        self.cp_mt_mode = None
-        self.ziip_mt_mode = None
-        self.cpc_nd = None
-        self.cpc_si = None
-        self.cpc_model = None
-        self.cpc_id = None
-        self.cpc_name = None
-        self.lpar_name = None
-        self.lpar_id = None
-        self.css_id = None
-        self.mif_id = None
+    number_ziip_cpus: int = None
+    number_reserved_ziip_cpus: int = None
+    number_ziip_cores: int = None
+    number_reserved_ziip_cores: int = None
 
-        self.name = None
-        self.part_id = None
-        self.partition_number = None
-        self.CPC = None
-        self.shared_processors = None
-        self.active = None
-        self.IPL_volume = None
-        self.os = None
-        self.os_name = None
-        self.os_level = None
-        self.last_updated = None
-        self.url = None
-        self.start_update = None
-        self.finish_update = None
+    number_ifl_cpus: int = None
+    number_reserved_ifl_cpus: int = None
+    number_ifl_cores: int = None
+    number_reserved_ifl_cores: int = None
 
-        self.number_general_cpus = None
-        self.number_reserved_cps = None
-        self.number_general_cores = None
-        self.number_reserved_cores = None
+    number_icf_cpus: int = None
+    number_reserved_icf_cpus: int = None
+    number_icf_cores: int = None
+    number_reserved_icf_cores: int = None
 
-        self.number_ziip_cpus = None
-        self.number_reserved_ziip_cpus = None
-        self.number_ziip_cores = None
-        self.number_reserved_ziip_cores = None
+    general_cp_weight_current: int = None
+    general_cp_weight_minimum: int = None
+    general_cp_weight_maximum: int = None
 
-        self.number_ifl_cpus = None
-        self.number_reserved_ifl_cpus = None
-        self.number_ifl_cores = None
-        self.number_reserved_ifl_cores = None
+    zaap_weight: int = None
+    zaap_weight_minimum: int = None
+    zaap_weight_maximum: int = None
 
-        self.number_icf_cpus = None
-        self.number_reserved_icf_cpus = None
-        self.number_icf_cores = None
-        self.number_reserved_icf_cores = None
+    ziip_weight: int = None
+    ziip_weight_minimum: int = None
+    ziip_weight_maximum: int = None
 
-        self.general_cp_weight_current = None
-        self.general_cp_weight_minimum = None
-        self.general_cp_weight_maximum = None
+    ifl_weight: int = None
+    ifl_weight_minimum: int = None
+    ifl_weight_maximum: int = None
 
-        self.zaap_weight = None
-        self.zaap_weight_minimum = None
-        self.zaap_weight_maximum = None
+    icf_weight: int = None
+    icf_weight_minimum: int = None
+    icf_weight_maximum: int = None
 
-        self.ziip_weight = None
-        self.ziip_weight_minimum = None
-        self.ziip_weight_maximum = None
+    storage: int = None
 
-        self.ifl_weight = None
-        self.ifl_weight_minimum = None
-        self.ifl_weight_maximum = None
-
-        self.icf_weight = None
-        self.icf_weight_minimum = None
-        self.icf_weight_maximum = None
-
-        self.storage = None
-
-        self.initial_central_storage = None
-        self.current_central_storage = None
-        self.maximum_central_storage = None
+    initial_central_storage: int = None
+    current_central_storage: int = None
+    maximum_central_storage: int = None
 
     def parse_d_m_core(self, iee174i_message):
         """
-        Takes the output of the response to 'D M=CORE' and builds a representation of the system logical processor
-        state at that time
+        Takes the output of the response to 'D M=CORE' and builds a representation of the
+        system logical processor state at that time
 
         :param core_status_message: The output of the message you want parsed
         :return: Updates the internal state information of the lpar
@@ -102,10 +103,10 @@ class LPAR():
         logger = logging.getLogger(__name__)
 
         if iee174i_message[0].split()[0] != "IEE174I":
-            raise LPARException("Incorrect message passed in")
-
-        if iee174i_message[1].startswith("CORE STATUS:") == False:
-            raise LPARException("IEE174I missing information")
+            message = str("Incorrect message passed in; expected IEE174I, got %s" %
+                          iee174i_message[0].split()[0])
+            logging.error(message)
+            raise LPARException(message)
 
         split_line_1 = iee174i_message[1].split()
 
@@ -113,50 +114,61 @@ class LPAR():
 
         hd_value = split_line_1[2][3]
 
-        logger.debug(hd_value)
-
         if hd_value == "Y":
             self.hiperdispatch = True
         elif hd_value == "N":
             self.hiperdispatch = False
         else:
-            logger.exception(LPARException("HD= should be Y or N; got %s" % hd_value))
+            message = str("HD= should be Y or N; got %s" % hd_value)
+            logging.error(message)
+            raise LPARException(message)
 
         mt_value = split_line_1[3][3]
 
-        if split_line_1[3][0:2] != "MT=":
-            logger.exception(LPARException("MT= was not in the correct place"))
+        if split_line_1[3][0:3] != "MT=":
+            message = ("MT= was not in the correct place; got %s" % split_line_1[3][0:3])
+            logging.error(message)
+            raise LPARException(message)
 
-        if mt_value.isdigit:
+        if mt_value.isdigit():
             self.mt_mode = int(mt_value)
         else:
-            logger.exception(LPARException("MT= should be a number; got %s" % mt_value))
+            message = ("MT= should be a number; got %s" % mt_value)
+            logging.error(message)
+            raise LPARException(message)
 
         cp_mt_mode = split_line_1[5][3]
 
-        if split_line_1[5][0:2] != "CP=":
-            logger.exception(LPARException("CP= was not in the correct place"))
+        if split_line_1[5][0:3] != "CP=":
+            message = "CP= was not in the correct place"
+            logging.error(message)
+            raise LPARException(message)
 
-        if split_line_1[5][3].isdigit:
+        if split_line_1[5][3].isdigit():
             self.cp_mt_mode = int(cp_mt_mode)
         else:
-            logger.exception(LPARException("CP= should be a number; got %s" % cp_mt_mode))
+            message = ("CP= should be a number; got %s" % cp_mt_mode)
+            logging.error(message)
+            raise LPARException(message)
 
         ziip_mt_mode = split_line_1[6][5]
 
-        if split_line_1[5][0:4] != "zIIP=":
-            logger.exception(LPARException("zIIP= was not in the correct place; got %s" % split_line_1[5][0:4]))
+        if split_line_1[6][0:5] != "zIIP=":
+            message = ("zIIP= was not in the correct place; got %s" % split_line_1[6][0:5])
+            logging.error(message)
+            raise LPARException(message)
 
-        if ziip_mt_mode.isdigit:
+        if ziip_mt_mode.isdigit():
             self.ziip_mt_mode = int(ziip_mt_mode)
         else:
-            raise LPARException("zIIP= should be a number, got %s" % ziip_mt_mode)
-
-
+            message = ("zIIP= should be a number, got %s" % ziip_mt_mode)
+            logging.error(message)
+            raise LPARException(message)
 
         core_re = re.compile(
-            '(?P<coreid>[0-9A-F]{4})  (?P<wlmmanaged>.)(?P<online>.)(?P<type>.)  (?P<lowid>[0-9A-F]{4})-(?P<highid>['
-            '0-9A-F]{4})(  (?P<polarity>.)(?P<parked>.)  (?P<subclassmask>[0-9A-F]{4})  (?P<state1>.)(?P<state2>.))?')
+            '(?P<coreid>[0-9A-F]{4})  (?P<wlmmanaged>.)(?P<online>.)(?P<type>.)  '
+            '(?P<lowid>[0-9A-F]{4})-(?P<highid>[0-9A-F]{4})(  (?P<polarity>.)(?P<parked>.)'
+            '  (?P<subclassmask>[0-9A-F]{4})  (?P<state1>.)(?P<state2>.))?')
 
         linenum = 3
 
@@ -167,47 +179,47 @@ class LPAR():
             if core_info is None:
                 break
             else:
-                core = dict()
+                core = Logical_CPU()
 
-                core["coreid"] = core_info.group("coreid")
+                core.coreid = core_info.group("coreid")
 
                 if core_info.group("online") == "+":
-                    core["online"] = True
+                    core.online = True
                 else:
-                    core["online"] = False
+                    core.online = False
 
                 if core_info.group("type") == " ":
-                    core["type"] = "CP"
+                    core.type = "CP"
                 elif core_info.group("type") == "I":
-                    core["type"] = "zIIP"
+                    core.type = "zIIP"
 
-                core["lowid"] = core_info.group("lowid")
-                core["highid"] = core_info.group("highid")
+                core.lowid = core_info.group("lowid")
+                core.highid = core_info.group("highid")
 
-                core["polarity"] = core_info.group("polarity")
+                core.polarity = core_info.group("polarity")
 
                 if core_info.group("parked") == "P":
-                    core["parked"] = True
+                    core.parked = True
                 else:
-                    core["parked"] = False
+                    core.parked = False
 
-                core["subclassmask"] = core_info.group("subclassmask")
+                core.subclassmask = core_info.group("subclassmask")
 
                 if core_info.group("state1") == "+":
-                    core["core_1_state"] = "online"
+                    core.core_1_state = "online"
                 elif core_info.group("state1") == "N":
-                    core["core_1_state"] = "not_available"
+                    core.core_1_state = "not_available"
                 elif core_info.group("state1") == "-":
-                    core["core_1_state"] = "offline"
+                    core.core_1_state = "offline"
 
                 if core_info.group("state2") == "+":
-                    core["core_2_state"] = "online"
+                    core.core_2_state = "online"
                 elif core_info.group("state2") == "N":
-                    core["core_2_state"] = "not_available"
+                    core.core_2_state = "not_available"
                 elif core_info.group("state2") == "-":
-                    core["core_2_state"] = "offline"
+                    core.core_2_state = "offline"
 
-                self.logical_processors[core["coreid"]] = core
+                self.logical_processors[core.coreid] = core
 
         linenum += 1
 
@@ -287,7 +299,6 @@ class LPAR():
             error = ("line didn't start with MIF ID = ;  got %s" % iee174i_message[linenum])
             logger.error(error)
             raise LPARException(error)
-
 
 
 class LPARException(Exception):

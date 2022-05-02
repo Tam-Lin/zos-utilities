@@ -1,24 +1,26 @@
-import logging
+import dataclasses
+from datetime import datetime
 
 
+@dataclasses.dataclass
 class CPC():
     """
     Represents an IBM Z CPC, aka CEC
     """
 
-    def __init__(self):
-        self.name = None
-        self.status = None
+    name: str = None
+    status: str = None
 
-        self.machine_model = None
-        self.machine_type = None
-        self.physical_general_processors = None
-        self.physical_ziips = None
-        self.physical_zaaps = None
-        self.physical_ifls = None
-        self.physical_icfs = None
+    machine_model: str = None
+    machine_type: str = None
+    physical_general_processors: int = None
+    physical_ziips: int = None
+    physical_zaaps: int = None
+    physical_ifls: int = None
+    physical_icfs: int = None
 
-        self.lpars = dict()
+    lpars: dict = dataclasses.field(default_factory=dict)
 
-        self.start_data_gathering = None
-        self.finish_data_gathering = None
+    start_data_gathering: datetime = None
+    finish_data_gathering: datetime = None
+    last_updated: datetime = None
