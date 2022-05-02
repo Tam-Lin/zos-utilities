@@ -113,40 +113,6 @@ class Test_LPAR_Parse_D_M_CORE():
         assert test_lpar.css_id == "1"
         assert test_lpar.mif_id == "B"
 
-    def test_lpar_parse_d_m_core(self, good_input):
-        test_lpar = lpar.LPAR()
-
-        test_lpar.parse_d_m_core(good_input)
-
-        assert test_lpar.hiperdispatch is True
-        assert test_lpar.mt_mode == 2
-        assert test_lpar.cp_mt_mode == 1
-        assert test_lpar.ziip_mt_mode == 2
-
-        assert len(test_lpar.logical_processors) == 44
-
-        core_0014 = test_lpar.logical_processors["0014"]
-
-        assert core_0014.type == "zIIP"
-        assert core_0014.online is True
-        assert core_0014.lowid == "0028"
-        assert core_0014.highid == "0029"
-        assert core_0014.polarity == "H"
-        assert core_0014.parked is False
-        assert core_0014.subclassmask == "0200"
-        assert core_0014.core_1_state == "online"
-        assert core_0014.core_2_state == "online"
-
-        assert test_lpar.cpc_nd == "008561.T01.IBM.02.000000000078"
-        assert test_lpar.cpc_si == "8561.776.IBM.02.0000000000000078"
-        assert test_lpar.cpc_model == "T01"
-        assert test_lpar.cpc_id == "00"
-        assert test_lpar.cpc_name == "T78"
-        assert test_lpar.lpar_name == "CB8A"
-        assert test_lpar.lpar_id == "1B"
-        assert test_lpar.css_id == "1"
-        assert test_lpar.mif_id == "B"
-
     def test_missing_IEE174I(self, good_input):
 
         bad_input = ["14.41.05 DISPLAY M 124                  "] + \
