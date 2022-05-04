@@ -7,3 +7,7 @@
 ----------------------
 * Add initial support for CPCs, LPARs, and logical CPUs
 * Change minimum python level to 3.7 so I can use dataclasses.  3.6 is EOL anyway.
+
+0.3.0 (2022-05-04)
+----------------------
+* Add support for PROCVIEW CPU systems

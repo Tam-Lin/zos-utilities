@@ -137,33 +137,36 @@ class LPAR:
             logging.error(message)
             raise LPARException(message)
 
-        cp_mt_mode = split_line_1[5][3]
-
-        if split_line_1[5][0:3] != "CP=":
-            message = "CP= was not in the correct place"
-            logging.error(message)
-            raise LPARException(message)
-
-        if split_line_1[5][3].isdigit():
-            self.cp_mt_mode = int(cp_mt_mode)
+        if self.mt_mode == 1:
+            pass
         else:
-            message = ("CP= should be a number; got %s" % cp_mt_mode)
-            logging.error(message)
-            raise LPARException(message)
+            cp_mt_mode = split_line_1[5][3]
 
-        ziip_mt_mode = split_line_1[6][5]
+            if split_line_1[5][0:3] != "CP=":
+                message = "CP= was not in the correct place"
+                logging.error(message)
+                raise LPARException(message)
 
-        if split_line_1[6][0:5] != "zIIP=":
-            message = ("zIIP= was not in the correct place; got %s" % split_line_1[6][0:5])
-            logging.error(message)
-            raise LPARException(message)
+            if split_line_1[5][3].isdigit():
+                self.cp_mt_mode = int(cp_mt_mode)
+            else:
+                message = ("CP= should be a number; got %s" % cp_mt_mode)
+                logging.error(message)
+                raise LPARException(message)
 
-        if ziip_mt_mode.isdigit():
-            self.ziip_mt_mode = int(ziip_mt_mode)
-        else:
-            message = ("zIIP= should be a number, got %s" % ziip_mt_mode)
-            logging.error(message)
-            raise LPARException(message)
+            ziip_mt_mode = split_line_1[6][5]
+
+            if split_line_1[6][0:5] != "zIIP=":
+                message = ("zIIP= was not in the correct place; got %s" % split_line_1[6][0:5])
+                logging.error(message)
+                raise LPARException(message)
+
+            if ziip_mt_mode.isdigit():
+                self.ziip_mt_mode = int(ziip_mt_mode)
+            else:
+                message = ("zIIP= should be a number, got %s" % ziip_mt_mode)
+                logging.error(message)
+                raise LPARException(message)
 
         core_re = re.compile(
             '(?P<coreid>[0-9A-F]{4})  (?P<wlmmanaged>.)(?P<online>.)(?P<type>.)  '
