@@ -11,3 +11,7 @@
 0.3.0 (2022-05-04)
 ----------------------
 * Add support for PROCVIEW CPU systems
+
+0.3.1 (2022-05-04)
+----------------------
+Had conflicting requirements for twine in requirements_dev.txt

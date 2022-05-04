@@ -10,46 +10,46 @@ class Test_LPAR_Parse_D_M_CORE():
         return [
             'IEE174I 14.12.45 DISPLAY M 781                   ',
             'CORE STATUS: HD=Y   MT=1                         ',
-                'ID    ST   ID RANGE   VP  ISCM  CPU THREAD STATUS',
-                '0000   +   0000-0000  H   FC00  +                ',
-                '0001   +   0001-0001  M   0000  +                ',
-                '0002   +   0002-0002  LP  0000  +                ',
-                '0003   +   0003-0003  LP  0000  +                ',
-                '0004   +   0004-0004  LP  0000  +                ',
-                '0005   +   0005-0005  LP  0000  +                ',
-                '0006   +I  0006-0006  H   0200  +                ',
-                '0007   +I  0007-0007  H   0200  +                ',
-                '0008   +I  0008-0008  H   0200  +                ',
-                '0009   +I  0009-0009  H   0200  +                ',
-                '000A   -I  000A-000A                             ',
-                '000B   -I  000B-000B                             ',
-                '000C   -I  000C-000C                             ',
-                '000D   -I  000D-000D                             ',
-                '000E   -I  000E-000E                             ',
-                '000F   -I  000F-000F                             ',
-                '',
-                'CPC ND = 008562.T02.IBM.02.0000000790A8                       ',
-                'CPC SI = 8562.Z06.IBM.02.00000000000790A8                     ',
-                '         Model: T02                                          ',
-                'CPC ID = 00                                                   ',
-                'CPC NAME = T256                                               ',
-                'LP NAME = S5E        LP ID = 21                               ',
-                'CSS ID  = 2                                                   ',
-                'MIF ID  = 1                                                   ',
-                '                                                             ',
-                '+ ONLINE    - OFFLINE    N NOT AVAILABLE    / MIXED STATE    ',
-                'W WLM-MANAGED                                                 ',
-                '                                                             ',
-                'I        INTEGRATED INFORMATION PROCESSOR (zIIP)              ',
-                'CPC ND  CENTRAL PROCESSING COMPLEX NODE DESCRIPTOR            ',
-                'CPC SI  SYSTEM INFORMATION FROM STSI INSTRUCTION              ',
-                'CPC ID  CENTRAL PROCESSING COMPLEX IDENTIFIER                 ',
-                'CPC NAME CENTRAL PROCESSING COMPLEX NAME                      ',
-                'LP NAME  LOGICAL PARTITION NAME                               ',
-                'LP ID    LOGICAL PARTITION IDENTIFIER                         ',
-                'CSS ID   CHANNEL SUBSYSTEM IDENTIFIER                         ',
-                'MIF ID   MULTIPLE IMAGE FACILITY IMAGE IDENTIFIER             '
-                ]
+            'ID    ST   ID RANGE   VP  ISCM  CPU THREAD STATUS',
+            '0000   +   0000-0000  H   FC00  +                ',
+            '0001   +   0001-0001  M   0000  +                ',
+            '0002   +   0002-0002  LP  0000  +                ',
+            '0003   +   0003-0003  LP  0000  +                ',
+            '0004   +   0004-0004  LP  0000  +                ',
+            '0005   +   0005-0005  LP  0000  +                ',
+            '0006   +I  0006-0006  H   0200  +                ',
+            '0007   +I  0007-0007  H   0200  +                ',
+            '0008   +I  0008-0008  H   0200  +                ',
+            '0009   +I  0009-0009  H   0200  +                ',
+            '000A   -I  000A-000A                             ',
+            '000B   -I  000B-000B                             ',
+            '000C   -I  000C-000C                             ',
+            '000D   -I  000D-000D                             ',
+            '000E   -I  000E-000E                             ',
+            '000F   -I  000F-000F                             ',
+            '',
+            'CPC ND = 008562.T02.IBM.02.0000000790A8                       ',
+            'CPC SI = 8562.Z06.IBM.02.00000000000790A8                     ',
+            '         Model: T02                                          ',
+            'CPC ID = 00                                                   ',
+            'CPC NAME = T256                                               ',
+            'LP NAME = S5E        LP ID = 21                               ',
+            'CSS ID  = 2                                                   ',
+            'MIF ID  = 1                                                   ',
+            '                                                             ',
+            '+ ONLINE    - OFFLINE    N NOT AVAILABLE    / MIXED STATE    ',
+            'W WLM-MANAGED                                                 ',
+            '                                                             ',
+            'I        INTEGRATED INFORMATION PROCESSOR (zIIP)              ',
+            'CPC ND  CENTRAL PROCESSING COMPLEX NODE DESCRIPTOR            ',
+            'CPC SI  SYSTEM INFORMATION FROM STSI INSTRUCTION              ',
+            'CPC ID  CENTRAL PROCESSING COMPLEX IDENTIFIER                 ',
+            'CPC NAME CENTRAL PROCESSING COMPLEX NAME                      ',
+            'LP NAME  LOGICAL PARTITION NAME                               ',
+            'LP ID    LOGICAL PARTITION IDENTIFIER                         ',
+            'CSS ID   CHANNEL SUBSYSTEM IDENTIFIER                         ',
+            'MIF ID   MULTIPLE IMAGE FACILITY IMAGE IDENTIFIER             '
+        ]
 
     @pytest.fixture
     def good_input_procview_core(self):
@@ -122,7 +122,7 @@ class Test_LPAR_Parse_D_M_CORE():
                 "LP ID    LOGICAL PARTITION IDENTIFIER                      ",
                 "CSS ID   CHANNEL SUBSYSTEM IDENTIFIER                      ",
                 "MIF ID   MULTIPLE IMAGE FACILITY IMAGE IDENTIFIER          "
-        ]
+                ]
 
     def test_lpar_parse_d_m_core_procview_cpu(self, good_input_procview_cpu):
         test_lpar = lpar.LPAR()
@@ -131,22 +131,22 @@ class Test_LPAR_Parse_D_M_CORE():
 
         assert test_lpar.hiperdispatch is True
         assert test_lpar.mt_mode == 1
-        assert test_lpar.cp_mt_mode == None
-        assert test_lpar.ziip_mt_mode == None
+        assert test_lpar.cp_mt_mode is None
+        assert test_lpar.ziip_mt_mode is None
 
         assert len(test_lpar.logical_processors) == 16
 
-        core_0014 = test_lpar.logical_processors["000A"]
+        core_000A = test_lpar.logical_processors["000A"]
 
-        assert core_0014.type == "zIIP"
-        assert core_0014.online is False
-        assert core_0014.lowid == "000A"
-        assert core_0014.highid == "000A"
-        assert core_0014.polarity == None
-        assert core_0014.parked == False
-        assert core_0014.subclassmask == None
-        assert core_0014.core_1_state == None
-        assert core_0014.core_2_state == None
+        assert core_000A.type == "zIIP"
+        assert core_000A.online is False
+        assert core_000A.lowid == "000A"
+        assert core_000A.highid == "000A"
+        assert core_000A.polarity is None
+        assert core_000A.parked is False
+        assert core_000A.subclassmask is None
+        assert core_000A.core_1_state is None
+        assert core_000A.core_2_state is None
 
         assert test_lpar.cpc_nd == "008562.T02.IBM.02.0000000790A8"
         assert test_lpar.cpc_si == "8562.Z06.IBM.02.00000000000790A8"
@@ -159,7 +159,6 @@ class Test_LPAR_Parse_D_M_CORE():
         assert test_lpar.mif_id == "1"
 
     def test_lpar_parse_d_m_core_procview_core(self, good_input_procview_core):
-
         test_lpar = lpar.LPAR()
         test_lpar.parse_d_m_core(good_input_procview_core)
 
