@@ -44,11 +44,12 @@ class LPAR:
     url: str = None
     start_update: datetime = None
     finish_update: datetime = None
+    status: str = None
 
     number_general_cpus: int = None
-    number_reserved_cps: int = None
+    number_reserved_general_cpus: int = None
     number_general_cores: int = None
-    number_reserved_cores: int = None
+    number_reserved_general_cores: int = None
 
     number_ziip_cpus: int = None
     number_reserved_ziip_cpus: int = None
@@ -65,23 +66,28 @@ class LPAR:
     number_icf_cores: int = None
     number_reserved_icf_cores: int = None
 
+    general_cp_weight_initial: int = None
     general_cp_weight_current: int = None
     general_cp_weight_minimum: int = None
     general_cp_weight_maximum: int = None
 
-    zaap_weight: int = None
+    zaap_weight_initial: int = None
+    zaap_weight_current: int = None
     zaap_weight_minimum: int = None
     zaap_weight_maximum: int = None
 
-    ziip_weight: int = None
+    ziip_weight_initial: int = None
+    ziip_weight_current: int = None
     ziip_weight_minimum: int = None
     ziip_weight_maximum: int = None
 
-    ifl_weight: int = None
+    ifl_weight_initial: int = None
+    ifl_weight_current: int = None
     ifl_weight_minimum: int = None
     ifl_weight_maximum: int = None
 
-    icf_weight: int = None
+    icf_weight_initial: int = None
+    icf_weight_current: int = None
     icf_weight_minimum: int = None
     icf_weight_maximum: int = None
 
