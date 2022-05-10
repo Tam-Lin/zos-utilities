@@ -14,4 +14,9 @@
 
 0.3.1 (2022-05-04)
 ----------------------
-Had conflicting requirements for twine in requirements_dev.txt
+* Had conflicting requirements for twine in requirements_dev.txt
+
+0.4.0 (2022-05-10)
+----------------------
+* Add some additional cpc and lpar fields
+* Automate build and publishing to Pypi
