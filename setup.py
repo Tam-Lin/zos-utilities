@@ -36,7 +36,7 @@ test_requirements = ['pytest>=3', ]
 setup(
     author="Kevin McKenzie",
     author_email='kmckenzi@us.ibm.com',
-    python_requires='>=3.6',
+    python_requires='>=3.7',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
