@@ -232,8 +232,8 @@ class LPAR:
 
         linenum += 1
 
-        if iee174i_message[linenum].startswith("CPC ND = "):
-            self.cpc_nd = iee174i_message[linenum][9:].rstrip()
+        if iee174i_message[linenum].lstrip().startswith("CPC ND = "):
+            self.cpc_nd = iee174i_message[linenum].lstrip()[9:].rstrip()
         else:
             error = ("line didn't start with CPC ND =; got %s" % iee174i_message[linenum])
             logger.error(error)
@@ -241,8 +241,8 @@ class LPAR:
 
         linenum += 1
 
-        if iee174i_message[linenum].startswith("CPC SI = "):
-            self.cpc_si = iee174i_message[linenum][9:].rstrip()
+        if iee174i_message[linenum].lstrip().startswith("CPC SI = "):
+            self.cpc_si = iee174i_message[linenum].lstrip()[9:].rstrip()
         else:
             error = ("line didn't start with CPC SI =; got %s" % iee174i_message[linenum])
             logger.error(error)
@@ -259,8 +259,8 @@ class LPAR:
 
         linenum += 1
 
-        if iee174i_message[linenum].startswith("CPC ID = "):
-            self.cpc_id = iee174i_message[linenum][9:].rstrip()
+        if iee174i_message[linenum].lstrip().startswith("CPC ID = "):
+            self.cpc_id = iee174i_message[linenum].lstrip()[9:].rstrip()
         else:
             error = ("line didn't start with CPC ID = ;  got %s" % iee174i_message[linenum])
             logger.error(error)
@@ -268,8 +268,8 @@ class LPAR:
 
         linenum += 1
 
-        if iee174i_message[linenum].startswith("CPC NAME = "):
-            self.cpc_name = iee174i_message[linenum][11:].rstrip()
+        if iee174i_message[linenum].lstrip().startswith("CPC NAME = "):
+            self.cpc_name = iee174i_message[linenum].lstrip()[11:].rstrip()
         else:
             error = ("line didn't start with CPC NAME = ;  got %s" % iee174i_message[linenum])
             logger.error(error)
@@ -277,15 +277,15 @@ class LPAR:
 
         linenum += 1
 
-        if iee174i_message[linenum].startswith("LP NAME = "):
-            self.lpar_name = iee174i_message[linenum][10:14].rstrip()
+        if iee174i_message[linenum].lstrip().startswith("LP NAME = "):
+            self.lpar_name = iee174i_message[linenum].lstrip()[10:14].rstrip()
         else:
             error = ("line didn't start with LP NAME = ;  got %s" % iee174i_message[linenum])
             logger.error(error)
             raise LPARException(error)
 
-        if iee174i_message[linenum][21:].startswith("LP ID = "):
-            self.lpar_id = iee174i_message[linenum][29:].rstrip()
+        if iee174i_message[linenum][21:].lstrip().startswith("LP ID = "):
+            self.lpar_id = iee174i_message[linenum].lstrip()[29:].rstrip()
         else:
             error = ("LP ID not where I expected; got %s" % iee174i_message[linenum])
             logger.error(error)
@@ -293,8 +293,8 @@ class LPAR:
 
         linenum += 1
 
-        if iee174i_message[linenum].startswith("CSS ID  = "):
-            self.css_id = iee174i_message[linenum][10:].rstrip()
+        if iee174i_message[linenum].lstrip().startswith("CSS ID  = "):
+            self.css_id = iee174i_message[linenum].lstrip()[10:].rstrip()
         else:
             error = ("line didn't start with CSS ID = ;  got %s" % iee174i_message[linenum])
             logger.error(error)
@@ -302,8 +302,8 @@ class LPAR:
 
         linenum += 1
 
-        if iee174i_message[linenum].startswith("MIF ID  = "):
-            self.mif_id = iee174i_message[linenum][10:].rstrip()
+        if iee174i_message[linenum].lstrip().startswith("MIF ID  = "):
+            self.mif_id = iee174i_message[linenum].lstrip()[10:].rstrip()
         else:
             error = ("line didn't start with MIF ID = ;  got %s" % iee174i_message[linenum])
             logger.error(error)

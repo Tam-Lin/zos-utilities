@@ -20,3 +20,7 @@
 ----------------------
 * Add some additional cpc and lpar fields
 * Automate build and publishing to Pypi
+
+0.5.0 (2022-05-25)
+----------------------
+* Strip out leading spaces from inputs (because sometimes they're getting passed in that way)

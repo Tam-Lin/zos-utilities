@@ -158,6 +158,44 @@ class Test_LPAR_Parse_D_M_CORE():
         assert test_lpar.css_id == "2"
         assert test_lpar.mif_id == "1"
 
+
+    def test_lpar_parse_d_m_core_procview_cpu_with_leading_spaces(self, good_input_procview_cpu):
+        test_lpar = lpar.LPAR()
+
+        leading_spaces_input = ['  {} '.format(x) for x in good_input_procview_cpu]
+
+        test_lpar.parse_d_m_core(leading_spaces_input)
+
+        assert test_lpar.hiperdispatch is True
+        assert test_lpar.mt_mode == 1
+        assert test_lpar.cp_mt_mode is None
+        assert test_lpar.ziip_mt_mode is None
+
+        assert len(test_lpar.logical_processors) == 16
+
+        core_000A = test_lpar.logical_processors["000A"]
+
+        assert core_000A.type == "zIIP"
+        assert core_000A.online is False
+        assert core_000A.lowid == "000A"
+        assert core_000A.highid == "000A"
+        assert core_000A.polarity is None
+        assert core_000A.parked is False
+        assert core_000A.subclassmask is None
+        assert core_000A.core_1_state is None
+        assert core_000A.core_2_state is None
+
+        assert test_lpar.cpc_nd == "008562.T02.IBM.02.0000000790A8"
+        assert test_lpar.cpc_si == "8562.Z06.IBM.02.00000000000790A8"
+        assert test_lpar.cpc_model == "T02"
+        assert test_lpar.cpc_id == "00"
+        assert test_lpar.cpc_name == "T256"
+        assert test_lpar.lpar_name == "S5E"
+        assert test_lpar.lpar_id == "21"
+        assert test_lpar.css_id == "2"
+        assert test_lpar.mif_id == "1"
+
+
     def test_lpar_parse_d_m_core_procview_core(self, good_input_procview_core):
         test_lpar = lpar.LPAR()
         test_lpar.parse_d_m_core(good_input_procview_core)
