@@ -139,6 +139,7 @@ class Test_LPAR_Parse_D_M_CORE():
         core_000A = test_lpar.logical_processors["000A"]
 
         assert core_000A.type == "zIIP"
+        assert core_000A.coreid == "000A"
         assert core_000A.online is False
         assert core_000A.lowid == "000A"
         assert core_000A.highid == "000A"
@@ -176,6 +177,7 @@ class Test_LPAR_Parse_D_M_CORE():
         core_000A = test_lpar.logical_processors["000A"]
 
         assert core_000A.type == "zIIP"
+        assert core_000A.coreid == "000A"
         assert core_000A.online is False
         assert core_000A.lowid == "000A"
         assert core_000A.highid == "000A"
@@ -210,6 +212,7 @@ class Test_LPAR_Parse_D_M_CORE():
         core_0014 = test_lpar.logical_processors["0014"]
 
         assert core_0014.type == "zIIP"
+        assert core_0014.coreid == "0014"
         assert core_0014.online is True
         assert core_0014.lowid == "0028"
         assert core_0014.highid == "0029"

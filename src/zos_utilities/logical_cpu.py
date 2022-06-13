@@ -7,7 +7,7 @@ class Logical_CPU:
     Represents a logical CPU on an IBM Z CPC
     """
 
-    core_id: str = None
+    coreid: str = None
     online: bool = None
     type: str = None
     lowid: str = None
@@ -17,3 +17,5 @@ class Logical_CPU:
     subclassmask: str = None
     core_1_state: str = None
     core_2_state: str = None
+
+    
