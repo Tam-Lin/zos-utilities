@@ -5,7 +5,9 @@ from collections import OrderedDict
 import dataclasses
 from datetime import datetime
 
-from zos_utilities.logical_cpu import Logical_CPU
+from .logical_cpu import Logical_CPU
+from .data_set import DataSet
+from .dasd_volume import DasdVolume
 
 
 @dataclasses.dataclass
@@ -96,6 +98,11 @@ class LPAR:
     initial_central_storage: int = None
     current_central_storage: int = None
     maximum_central_storage: int = None
+
+    plpa_data_set: DataSet = None
+    common_data_set: DataSet = None
+    local_data_set: dataclasses.field(default_factory=list()) = None
+    scm = None
 
     def parse_d_m_core(self, iee174i_message):
         """
@@ -309,6 +316,43 @@ class LPAR:
             logger.error(error)
             raise LPARException(error)
 
+    def parse_d_asm(self, iee200i_message):
+
+        logger = logging.getLogger(__name__)
+
+        if iee200i_message[0].split()[0] != "IEE200I":
+            message = str("Incorrect message passed in; expected IEE200I, got %s" %
+                          IEE200I_message[0].split()[0])
+            logging.error(message)
+            raise LPARException(message)
+
+        for linenum, line in enumerate(iee200i_message[2:], start=2):
+
+            split_line = line.split()
+            storage_type = split_line[0]
+
+            if storage_type in ("PLPA", "COMMON", "LOCAL"):
+
+                percent_full = split_line[1]
+                status = split_line[3]
+                dev = split_line[4]
+                dataset_name = split_line[5]
+
+
+                dataset = DataSet(name=dataset_name, location=DasdVolume(unit_address=dev))
+
+                if storage_type == "PLPA":
+                    self.plpa_data_set = dataset
+                elif storage_type == "COMMON":
+                    self.common_data_set = dataset
+                elif storage_type == "LOCAL":
+                    try:
+                        self.local_data_set.append(dataset)
+                    except AttributeError:
+                        self.local_data_set = [dataset]
+
+            if storage_type == "SCM":
+                self.scm = True
 
 class LPARException(Exception):
     pass
