@@ -159,7 +159,6 @@ class Test_LPAR_Parse_D_M_CORE():
         assert test_lpar.css_id == "2"
         assert test_lpar.mif_id == "1"
 
-
     def test_lpar_parse_d_m_core_procview_cpu_with_leading_spaces(self, good_input_procview_cpu):
         test_lpar = lpar.LPAR()
 
@@ -196,7 +195,6 @@ class Test_LPAR_Parse_D_M_CORE():
         assert test_lpar.lpar_id == "21"
         assert test_lpar.css_id == "2"
         assert test_lpar.mif_id == "1"
-
 
     def test_lpar_parse_d_m_core_procview_core(self, good_input_procview_core):
         test_lpar = lpar.LPAR()

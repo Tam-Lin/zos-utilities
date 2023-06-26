@@ -17,5 +17,3 @@ class Logical_CPU:
     subclassmask: str = None
     core_1_state: str = None
     core_2_state: str = None
-
-    

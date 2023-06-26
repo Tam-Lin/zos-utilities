@@ -4,6 +4,7 @@ from src.zos_utilities.data_set import DataSet
 from src.zos_utilities.dasd_volume import DasdVolume
 from src.zos_utilities.lpar import LPAR
 
+
 class Test_LPAR_Parse_D_ASM():
 
     @pytest.fixture
@@ -101,6 +102,7 @@ class Test_LPAR_Parse_D_ASM():
 
         assert test_lpar.plpa_data_set == plpa_dataset
         assert test_lpar.common_data_set == common_dataset
+        assert test_lpar.local_data_set == local_dataset_list
         assert test_lpar.scm is None
 
     def test_d_asm_output_scm_in_use(self, good_d_asm_output_no_scm):
@@ -139,4 +141,5 @@ class Test_LPAR_Parse_D_ASM():
 
         assert test_lpar.plpa_data_set == plpa_dataset
         assert test_lpar.common_data_set == common_dataset
+        assert test_lpar.local_data_set == local_dataset_list
         assert test_lpar.scm is None

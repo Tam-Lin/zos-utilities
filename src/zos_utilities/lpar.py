@@ -322,8 +322,8 @@ class LPAR:
 
         if iee200i_message[0].split()[0] != "IEE200I":
             message = str("Incorrect message passed in; expected IEE200I, got %s" %
-                          IEE200I_message[0].split()[0])
-            logging.error(message)
+                          iee200i_message[0].split()[0])
+            logger.error(message)
             raise LPARException(message)
 
         for linenum, line in enumerate(iee200i_message[2:], start=2):
@@ -333,11 +333,8 @@ class LPAR:
 
             if storage_type in ("PLPA", "COMMON", "LOCAL"):
 
-                percent_full = split_line[1]
-                status = split_line[3]
                 dev = split_line[4]
                 dataset_name = split_line[5]
-
 
                 dataset = DataSet(name=dataset_name, location=DasdVolume(unit_address=dev))
 
@@ -353,6 +350,7 @@ class LPAR:
 
             if storage_type == "SCM":
                 self.scm = True
+
 
 class LPARException(Exception):
     pass
