@@ -24,3 +24,11 @@
 0.5.0 (2022-05-25)
 ----------------------
 * Strip out leading spaces from inputs (because sometimes they're getting passed in that way)
+
+0.5.3 (2022-06-13)
+----------------------
+* Bugfixes
+
+0.6.0 (2023-06-25)
+----------------------
+* Add initial support for IEE200I (D ASM output)
