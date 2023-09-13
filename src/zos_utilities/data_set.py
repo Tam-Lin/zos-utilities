@@ -2,7 +2,7 @@ import dataclasses
 
 from typing import Union
 
-from src.zos_utilities.dasd_volume import DasdVolume
+from .dasd_volume import DasdVolume
 
 
 @dataclasses.dataclass
